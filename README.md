@@ -8,7 +8,7 @@ Plugins audio (AU / VST3 / Standalone) écrits avec [JUCE 8](https://juce.com), 
 
 ## Installer (Mac Apple Silicon)
 
-Télécharge les plugins compilés dans la page **Releases**, puis :
+Les plugins compilés sont dans le dossier `binaires/` de chaque plugin (ex. [Palindrome/binaires](Palindrome/binaires/)). Clique sur un .zip puis *Download raw file*, dézippe, puis :
 
 1. copie `*.component` dans `~/Library/Audio/Plug-Ins/Components` et `*.vst3` dans `~/Library/Audio/Plug-Ins/VST3` ;
 2. les plugins ne sont pas signés par Apple : dans le Terminal, lance
