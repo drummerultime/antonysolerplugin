@@ -8,7 +8,7 @@ Plugins audio et instruments virtuels (AU / VST3 / Standalone) écrits en C++ av
 | [FRAGOR](FRAGOR/) | Fragor | Instrument | Synthé de sound design dubstep : wobbles, growls, riddim, reese… wavetables, LFO dessinés, chaîne d'effets libre, MPE. |
 | [MetropolisTrilogie](MetropolisTrilogie/) | Maria, Rotwang, Grot | Effets | Trilogie pour ciné-concert improvisé sur *Metropolis* : partenaire d'improvisation façon OMax (Maria), sound design de textures (Rotwang) et de percussions (Grot). |
 | [Metropolis](Metropolis/) | Metropolis | Effet | Premier plugin de sound design pour batterie et percussions : moteurs Impact, Resonator, Reverse, Grain, Stutter. |
-| [AleaSuite](AleaSuite/) | Alea, Talea, Color, Cantus | Instruments | Suite générative synchronisée : percussions, basse, harmonie et mélodie qui jouent ensemble. *Binaires seulement pour l'instant.* |
+| [AleaSuite](AleaSuite/) | Alea, Talea, Color, Cantus | Instruments | Suite générative synchronisée (AleaLink) : percussions, basse, harmonie et mélodie qui jouent ensemble ; démos audio dans `AleaSuite/demos`. |
 
 ## Aperçu
 
@@ -17,8 +17,10 @@ Plugins audio et instruments virtuels (AU / VST3 / Standalone) écrits en C++ av
 | ![Palindrome](captures/palindrome-cycle.png) | ![Découpage](captures/palindrome-decoupage.png) |
 | **Maria** | **Rotwang** |
 | ![Maria](captures/maria.png) | ![Rotwang](captures/rotwang.png) |
-| **Grot** | |
-| ![Grot](captures/grot.png) | |
+| **Grot** | **Cantus** (suite Alea) |
+| ![Grot](captures/grot.png) | ![Cantus](AleaSuite/docs/cantus_gui_perform.png) |
+| **Color** (suite Alea) | **Talea** (suite Alea) |
+| ![Color](AleaSuite/docs/color_gui_harmonie.png) | ![Talea](AleaSuite/docs/talea_gui_perform.png) |
 
 ## Installer (Mac Apple Silicon)
 
@@ -32,6 +34,9 @@ Chaque dossier contient un sous-dossier `binaires/` avec les plugins compilés (
 3. Relance ton logiciel (dans Live : *Réglages → Plug-ins → Rescanner*).
 
 ## Compiler
+
+La suite Alea est aussi compilée automatiquement par GitHub (onglet *Actions*) pour macOS et Windows, avec ses bancs de test.
+
 
 Chaque plugin a son propre projet CMake ; voir le README de chaque dossier. Prérequis : Xcode Command Line Tools et CMake 3.22+. JUCE est téléchargé automatiquement quand aucun chemin local n'est donné.
 

@@ -1,0 +1,77 @@
+# Compilation automatique de la suite (Alea + Talea + Color + Cantus) : macOS universel, Windows, Linux + bancs de test.
+# A chaque push sur GitHub, les plugins compiles sont disponibles dans l'onglet "Actions" > Artifacts.
+name: AleaSuite
+
+on:
+  push:
+    paths: [ "AleaSuite/**", ".github/workflows/aleasuite.yml" ]
+  pull_request:
+    paths: [ "AleaSuite/**" ]
+  workflow_dispatch:
+
+defaults:
+  run:
+    working-directory: AleaSuite
+
+jobs:
+  macos:
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+      - name: Configure
+        run: cmake -B build -G Xcode -DCMAKE_BUILD_TYPE=Release -DALEA_COPY_AFTER_BUILD=OFF
+      - name: Build
+        run: cmake --build build --config Release --target Alea_VST3 Alea_AU Alea_Standalone Talea_VST3 Talea_AU Talea_Standalone Color_VST3 Color_AU Color_Standalone Cantus_VST3 Cantus_AU Cantus_Standalone -- -quiet
+      - name: Installeur .pkg (non signe)
+        run: bash scripts/make_installer_mac.sh build
+      - uses: actions/upload-artifact@v4
+        with:
+          name: AleaSuite-macOS
+          path: |
+            AleaSuite/build/Alea_artefacts/Release
+            AleaSuite/build/Talea_artefacts/Release
+            AleaSuite/build/Color_artefacts/Release
+            AleaSuite/build/Cantus_artefacts/Release
+            AleaSuite/build/AleaSuite-macOS.pkg
+
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Configure
+        run: cmake -B build -DCMAKE_BUILD_TYPE=Release -DALEA_COPY_AFTER_BUILD=OFF
+      - name: Build
+        run: cmake --build build --config Release --target Alea_VST3 Alea_Standalone Talea_VST3 Talea_Standalone Color_VST3 Color_Standalone Cantus_VST3 Cantus_Standalone
+      - uses: actions/upload-artifact@v4
+        with:
+          name: AleaSuite-Windows
+          path: |
+            AleaSuite/build/Alea_artefacts/Release
+            AleaSuite/build/Talea_artefacts/Release
+            AleaSuite/build/Color_artefacts/Release
+            AleaSuite/build/Cantus_artefacts/Release
+
+  linux-tests:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Dependances
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libasound2-dev libfreetype-dev libx11-dev libxrandr-dev libxinerama-dev \
+            libxcursor-dev libxext-dev libgl1-mesa-dev xvfb fonts-dejavu-core ninja-build
+      - name: Build tests
+        run: |
+          cmake -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DALEA_BUILD_TESTS=ON -DALEA_COPY_AFTER_BUILD=OFF
+          cmake --build build --target AleaTest TaleaTest ColorTest CantusTest
+      - name: Bancs de test
+        run: |
+          xvfb-run -a -s "-screen 0 1920x1200x24" ./build/AleaTest_artefacts/Release/AleaTest test_out
+          xvfb-run -a -s "-screen 0 1920x1200x24" ./build/TaleaTest_artefacts/Release/TaleaTest test_out
+          xvfb-run -a -s "-screen 0 1920x1200x24" ./build/ColorTest_artefacts/Release/ColorTest test_out
+          xvfb-run -a -s "-screen 0 1920x1200x24" ./build/CantusTest_artefacts/Release/CantusTest test_out
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: AleaSuite-test-output
+          path: AleaSuite/test_out
