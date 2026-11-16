@@ -1,28 +1,39 @@
-# Plugins audio d'Antony
+# Plugins audio d'Antony Soler
 
-Plugins audio (AU / VST3 / Standalone) écrits avec [JUCE 8](https://juce.com), pour la scène et le studio.
+Plugins audio et instruments virtuels (AU / VST3 / Standalone) écrits en C++ avec [JUCE 8](https://juce.com), pour la scène, le studio et le ciné-concert.
 
-| Plugin | Description |
+| Dossier | Plugins | Type | Description |
+|---|---|---|---|
+| [Palindrome](Palindrome/) | Palindrome, Palindrome MIDI | Effet | Capture une phrase jouée et la rejoue en différé : reverse / normal, ordre des notes au hasard, gammes, écho façon Memory Man, banque de captures, découpage legato et accords, MIDI learn. |
+| [FRAGOR](FRAGOR/) | Fragor | Instrument | Synthé de sound design dubstep : wobbles, growls, riddim, reese… wavetables, LFO dessinés, chaîne d'effets libre, MPE. |
+| [MetropolisTrilogie](MetropolisTrilogie/) | Maria, Rotwang, Grot | Effets | Trilogie pour ciné-concert improvisé sur *Metropolis* : partenaire d'improvisation façon OMax (Maria), sound design de textures (Rotwang) et de percussions (Grot). |
+| [Metropolis](Metropolis/) | Metropolis | Effet | Premier plugin de sound design pour batterie et percussions : moteurs Impact, Resonator, Reverse, Grain, Stutter. |
+| [AleaSuite](AleaSuite/) | Alea, Talea, Color, Cantus | Instruments | Suite générative synchronisée : percussions, basse, harmonie et mélodie qui jouent ensemble. *Binaires seulement pour l'instant.* |
+
+## Aperçu
+
+| Palindrome | Palindrome : découpage en notes |
 |---|---|
-| [**Palindrome**](Palindrome/) | Capture une phrase jouée par un instrument et la rejoue en différé : reverse / normal, ordre des notes au hasard, tonalité, écho façon Memory Man, banque de captures, découpage legato et accords, MIDI learn. |
+| ![Palindrome](captures/palindrome-cycle.png) | ![Découpage](captures/palindrome-decoupage.png) |
+| **Maria** | **Rotwang** |
+| ![Maria](captures/maria.png) | ![Rotwang](captures/rotwang.png) |
+| **Grot** | |
+| ![Grot](captures/grot.png) | |
 
 ## Installer (Mac Apple Silicon)
 
-Les plugins compilés sont dans le dossier `binaires/` de chaque plugin (ex. [Palindrome/binaires](Palindrome/binaires/)). Clique sur un .zip puis *Download raw file*, dézippe, puis :
+Chaque dossier contient un sous-dossier `binaires/` avec les plugins compilés (.zip). Sur GitHub : clique sur un .zip, puis sur *Download raw file*.
 
-1. copie `*.component` dans `~/Library/Audio/Plug-Ins/Components` et `*.vst3` dans `~/Library/Audio/Plug-Ins/VST3` ;
-2. les plugins ne sont pas signés par Apple : dans le Terminal, lance
-   `xattr -dr com.apple.quarantine ~/Library/Audio/Plug-Ins/Components/Palindrome*.component ~/Library/Audio/Plug-Ins/VST3/Palindrome.vst3`.
+1. Dézippe, puis copie les `.component` dans `~/Library/Audio/Plug-Ins/Components` et les `.vst3` dans `~/Library/Audio/Plug-Ins/VST3`.
+2. Les plugins ne sont pas signés par Apple : dans le Terminal, lance
+   ```bash
+   xattr -dr com.apple.quarantine ~/Library/Audio/Plug-Ins/Components ~/Library/Audio/Plug-Ins/VST3
+   ```
+3. Relance ton logiciel (dans Live : *Réglages → Plug-ins → Rescanner*).
 
 ## Compiler
 
-Chaque plugin a son propre `CMakeLists.txt` :
-
-```bash
-cd Palindrome
-cmake -B build -DJUCE_PATH=/chemin/vers/JUCE   # sinon JUCE 8.0.4 est téléchargé
-cmake --build build --config Release -j8
-```
+Chaque plugin a son propre projet CMake ; voir le README de chaque dossier. Prérequis : Xcode Command Line Tools et CMake 3.22+. JUCE est téléchargé automatiquement quand aucun chemin local n'est donné.
 
 ## Licence
 
